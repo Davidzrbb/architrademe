@@ -1,0 +1,23 @@
+package arch.hex.server.mapper;
+
+import arch.hex.domain.functional.model.Skill;
+import arch.hex.server.entity.SkillEntity;
+
+public interface SkillEntityMapper {
+    static Skill toDomain(SkillEntity entity) {
+        return Skill.builder()
+                .idSkill(entity.getIdSkill())
+                .name(entity.getName())
+                .consultant(ConsultantEntityMapper.toDomain(entity.getConsultantEntity()))
+                .build();
+    }
+
+    static SkillEntity fromDomain(Skill domain) {
+        return SkillEntity.builder()
+                .idSkill(domain.getIdSkill())
+                .name(domain.getName())
+                .consultantEntity(ConsultantEntityMapper.fromDomain(domain.getConsultant()))
+                .build();
+    }
+}
+
