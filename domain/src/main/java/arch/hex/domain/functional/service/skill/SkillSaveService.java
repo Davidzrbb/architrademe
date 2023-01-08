@@ -1,4 +1,4 @@
-package arch.hex.domain.functional.service;
+package arch.hex.domain.functional.service.skill;
 
 import arch.hex.domain.ApplicationError;
 import arch.hex.domain.functional.model.Consultant;
@@ -12,7 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SkillSaveService {
     private final SkillPersistenceSpi skillPersistenceSpi;
-    public Either<ApplicationError, Skill> save(String skill, Consultant consultant) {
-        return skillPersistenceSpi.save(Skill.builder().name(skill).consultant(consultant).build());
+    
+    public void save(String[] skills, Consultant consultant) {
+        for (String skill : skills) {
+            Either<ApplicationError, Skill> skillActual = skillPersistenceSpi.save(Skill.builder().name(skill).consultant(consultant).build());
+            if (skillActual.isLeft()) {
+                skillActual.getLeft();
+            }
+        }
     }
 }

@@ -11,6 +11,9 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static arch.hex.server.mapper.AvailabilityEntityMapper.fromDomain;
 import static io.vavr.API.Try;
 
@@ -29,6 +32,15 @@ public class AvailabilityDataBaseAdapter implements AvailabilityPersistenceSpi {
                 .toEither()
                 .mapLeft(throwable -> new ApplicationError("Unable to save availability", null, availability, throwable))
                 .map(AvailabilityEntityMapper::toDomain);
+    }
+
+    @Override
+    @Transactional
+    public Either<ApplicationError, List<Availability>> deleteAllByIdConsultant(String idConsultant) {
+        return Try(() -> availabilityRepository.deleteAllByConsultantEntity_IdConsultant(idConsultant))
+                .toEither()
+                .mapLeft(throwable -> new ApplicationError("Unable to delete availabilities", null, idConsultant, throwable))
+                .map(availabilities -> availabilities.stream().map(AvailabilityEntityMapper::toDomain).collect(Collectors.toList()));
     }
 }
 

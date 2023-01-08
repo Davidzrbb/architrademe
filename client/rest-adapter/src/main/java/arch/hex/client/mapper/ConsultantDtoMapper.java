@@ -25,4 +25,13 @@ public interface ConsultantDtoMapper {
                 .build();
     }
 
+    static Consultant updateToDomain(String idConsultant, String name, String description, Integer averageDailyRate) {
+        return Consultant.builder()
+                .idConsultant(idConsultant)
+                .name(name)
+                .description(description)
+                .averageDailyRate(averageDailyRate)
+                .build();
+    }
+
 }

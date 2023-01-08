@@ -11,6 +11,9 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static arch.hex.server.mapper.SkillEntityMapper.fromDomain;
 import static io.vavr.API.Try;
 
@@ -28,5 +31,14 @@ public class SkillDataBaseAdapter implements SkillPersistenceSpi {
                 .toEither()
                 .mapLeft(throwable -> new ApplicationError("Unable to save skill", null, skill, throwable))
                 .map(SkillEntityMapper::toDomain);
+    }
+
+    @Override
+    @Transactional
+    public Either<ApplicationError, List<Skill>> deleteAllByIdConsultant(String idConsultant) {
+        return Try(() -> skillRepository.deleteAllByConsultantEntity_IdConsultant(idConsultant))
+                .toEither()
+                .mapLeft(throwable -> new ApplicationError("Unable to delete skills", null, idConsultant, throwable))
+                .map(skills -> skills.stream().map(SkillEntityMapper::toDomain).collect(Collectors.toList()));
     }
 }

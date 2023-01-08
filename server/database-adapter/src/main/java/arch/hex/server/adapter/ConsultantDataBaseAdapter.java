@@ -6,6 +6,7 @@ import arch.hex.domain.ports.server.model_persistence.ConsultantPersistenceSpi;
 import arch.hex.server.mapper.ConsultantEntityMapper;
 import arch.hex.server.repository.ConsultantRepository;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,13 @@ public class ConsultantDataBaseAdapter implements ConsultantPersistenceSpi {
         return Try(() -> consultantRepositories.save(entity))
                 .toEither()
                 .mapLeft(throwable -> new ApplicationError("Unable to save consultant", null, consultant, throwable))
+                .map(ConsultantEntityMapper::toDomain);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Option<Consultant> findById(String idConsultant) {
+        return consultantRepositories.findConsultantEntityByIdConsultant(idConsultant)
                 .map(ConsultantEntityMapper::toDomain);
     }
 }
