@@ -2,6 +2,8 @@ package arch.hex.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 
 @JsonAutoDetect(fieldVisibility = ANY)
@@ -10,6 +12,6 @@ public record ConsultantDto(
         String name,
         String description,
         Integer averageDailyRate,
-        String[] skills,
-        String[] available) {
+        List<String> skills,
+        List<String> available) {
 }

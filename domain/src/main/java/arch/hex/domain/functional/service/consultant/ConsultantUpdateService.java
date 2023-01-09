@@ -15,6 +15,8 @@ import io.vavr.control.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 public class ConsultantUpdateService implements ConsultantUpdateApi {
@@ -26,7 +28,7 @@ public class ConsultantUpdateService implements ConsultantUpdateApi {
     private final ValidationNullSave validationNullSave;
 
     @Override
-    public Either<ApplicationError, ResponseConsultant> save(Consultant consultant, String[] skills, String[] availability) {
+    public Either<ApplicationError, ResponseConsultant> save(Consultant consultant, List<String> skills, List<String> availability) {
         Validation<ApplicationError, Boolean> validation = validationNullSave.validate(consultant, skills, availability);
         if (validation.isInvalid()) {
             return Either.left(validation.getError());

@@ -2,6 +2,7 @@ package arch.hex.server.adapter;
 
 import arch.hex.domain.ApplicationError;
 import arch.hex.domain.functional.model.Availability;
+import arch.hex.domain.functional.model.Consultant;
 import arch.hex.domain.ports.server.model_persistence.AvailabilityPersistenceSpi;
 import arch.hex.server.mapper.AvailabilityEntityMapper;
 import arch.hex.server.repository.AvailabilityRepository;
@@ -41,6 +42,17 @@ public class AvailabilityDataBaseAdapter implements AvailabilityPersistenceSpi {
                 .toEither()
                 .mapLeft(throwable -> new ApplicationError("Unable to delete availabilities", null, idConsultant, throwable))
                 .map(availabilities -> availabilities.stream().map(AvailabilityEntityMapper::toDomain).collect(Collectors.toList()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> findAvailabilityByConsultant(Consultant consultant) {
+        val entity = arch.hex.server.mapper.ConsultantEntityMapper.fromDomain(consultant);
+        return availabilityRepository.findByConsultantEntity(entity)
+                .stream()
+                .map(AvailabilityEntityMapper::toDomain)
+                .map(Availability::getAvailability)
+                .collect(Collectors.toList());
     }
 }
 

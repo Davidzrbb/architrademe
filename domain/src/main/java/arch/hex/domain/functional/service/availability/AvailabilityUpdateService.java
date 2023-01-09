@@ -8,13 +8,15 @@ import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 public class AvailabilityUpdateService {
     private final AvailabilityPersistenceSpi availabilityPersistenceSpi;
     private final AvailabilityDeleteService availabilityDeleteService;
 
-    public void save(String[] availability, Consultant consultant) {
+    public void save(List<String> availability, Consultant consultant) {
         availabilityDeleteService.deleteAllByIdConsultant(consultant.getIdConsultant());
         for (String available : availability) {
             Either<ApplicationError, Availability> availabilityActual = availabilityPersistenceSpi.save(Availability.builder().availability(available).consultant(consultant).build());

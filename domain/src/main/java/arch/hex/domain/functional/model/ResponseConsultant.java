@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
+import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -21,8 +22,8 @@ public class ResponseConsultant {
     String description;
 
     @With
-    String[] skills;
+    List<String> skills;
 
     @With
-    String[] available;
+    List<String> available;
 }

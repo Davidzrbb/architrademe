@@ -3,7 +3,10 @@ package arch.hex.infra;
 import arch.hex.domain.functional.service.availability.AvailabilityDeleteService;
 import arch.hex.domain.functional.service.availability.AvailabilitySaveService;
 import arch.hex.domain.functional.service.availability.AvailabilityUpdateService;
+import arch.hex.domain.functional.service.availability.FindAvailabilityByConsultantService;
+import arch.hex.domain.functional.service.skill.FindSkillsByConsultantService;
 import arch.hex.domain.ports.server.model_persistence.AvailabilityPersistenceSpi;
+import arch.hex.domain.ports.server.model_persistence.SkillPersistenceSpi;
 import arch.hex.server.adapter.AvailabilityDataBaseAdapter;
 import arch.hex.server.repository.AvailabilityRepository;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +23,11 @@ public class AvailabilityConfig {
     @Bean
     public AvailabilityUpdateService availabilityUpdateService(AvailabilityPersistenceSpi spi, AvailabilityDeleteService availabilityDeleteService) {
         return new AvailabilityUpdateService(spi, availabilityDeleteService);
+    }
+
+    @Bean
+    public FindAvailabilityByConsultantService findAvailabilityByConsultantService(AvailabilityPersistenceSpi spi) {
+        return new FindAvailabilityByConsultantService(spi);
     }
 
     @Bean

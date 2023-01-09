@@ -7,7 +7,6 @@ import io.vavr.control.Either;
 
 import java.util.List;
 
-public interface ConsultantSaveApi {
-    Either<ApplicationError, ResponseConsultant> save(Consultant consultant, List<String> skills, List<String> availability);
+public interface ConsultantSearchApi {
+    Either<ApplicationError, List<ResponseConsultant>> search(List<String> skills, List<String> availability);
 }
-

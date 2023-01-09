@@ -4,6 +4,8 @@ import arch.hex.client.dto.ConsultantDto;
 import arch.hex.domain.functional.model.Consultant;
 import arch.hex.domain.functional.model.ResponseConsultant;
 
+import java.util.List;
+
 
 public interface ConsultantDtoMapper {
     static ConsultantDto toDto(ResponseConsultant responseConsultant) {
@@ -15,6 +17,12 @@ public interface ConsultantDtoMapper {
                 responseConsultant.getSkills(),
                 responseConsultant.getAvailable()
         );
+    }
+
+    static List<ConsultantDto> toDto(List<ResponseConsultant> responseConsultants) {
+        return responseConsultants.stream()
+                .map(ConsultantDtoMapper::toDto)
+                .toList();
     }
 
     static Consultant creationToDomain(String name, String description, Integer averageDailyRate) {

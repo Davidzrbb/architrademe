@@ -8,12 +8,14 @@ import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 public class SkillSaveService {
     private final SkillPersistenceSpi skillPersistenceSpi;
     
-    public void save(String[] skills, Consultant consultant) {
+    public void save(List<String> skills, Consultant consultant) {
         for (String skill : skills) {
             Either<ApplicationError, Skill> skillActual = skillPersistenceSpi.save(Skill.builder().name(skill).consultant(consultant).build());
             if (skillActual.isLeft()) {

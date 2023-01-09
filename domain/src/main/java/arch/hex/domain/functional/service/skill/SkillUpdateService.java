@@ -8,13 +8,15 @@ import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 public class SkillUpdateService {
     private final SkillPersistenceSpi skillPersistenceSpi;
     private final SkillDeleteService skillDeleteService;
 
-    public void save(String[] skills, Consultant consultant) {
+    public void save(List<String> skills, Consultant consultant) {
         skillDeleteService.deleteAllByIdConsultant(consultant.getIdConsultant());
         for (String skill : skills) {
             Either<ApplicationError, Skill> skillActual = skillPersistenceSpi.save(Skill.builder().name(skill).consultant(consultant).build());

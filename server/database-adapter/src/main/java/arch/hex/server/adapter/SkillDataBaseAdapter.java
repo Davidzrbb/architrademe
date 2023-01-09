@@ -1,6 +1,7 @@
 package arch.hex.server.adapter;
 
 import arch.hex.domain.ApplicationError;
+import arch.hex.domain.functional.model.Consultant;
 import arch.hex.domain.functional.model.Skill;
 import arch.hex.domain.ports.server.model_persistence.SkillPersistenceSpi;
 import arch.hex.server.mapper.SkillEntityMapper;
@@ -40,5 +41,16 @@ public class SkillDataBaseAdapter implements SkillPersistenceSpi {
                 .toEither()
                 .mapLeft(throwable -> new ApplicationError("Unable to delete skills", null, idConsultant, throwable))
                 .map(skills -> skills.stream().map(SkillEntityMapper::toDomain).collect(Collectors.toList()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> findSkillsByConsultant(Consultant consultant) {
+        val entity = arch.hex.server.mapper.ConsultantEntityMapper.fromDomain(consultant);
+        return skillRepository.findByConsultantEntity(entity)
+                .stream()
+                .map(SkillEntityMapper::toDomain)
+                .map(Skill::getName)
+                .collect(Collectors.toList());
     }
 }

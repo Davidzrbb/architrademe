@@ -11,13 +11,11 @@ public interface AvailabilityEntityMapper {
     static Availability toDomain(AvailabilityEntity entity) {
         return Availability.builder()
                 .idAvailability(entity.getIdAvailability())
+                .availability(entity.getAvailability())
                 .consultant(ConsultantEntityMapper.toDomain(entity.getConsultantEntity()))
                 .build();
     }
 
-    static List<Availability> toDomain(List<AvailabilityEntity> entities) {
-        return entities.stream().map(AvailabilityEntityMapper::toDomain).toList();
-    }
 
     static AvailabilityEntity fromDomain(Availability domain) {
         return AvailabilityEntity.builder()

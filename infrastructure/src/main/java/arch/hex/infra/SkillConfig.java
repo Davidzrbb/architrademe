@@ -1,5 +1,6 @@
 package arch.hex.infra;
 
+import arch.hex.domain.functional.service.skill.FindSkillsByConsultantService;
 import arch.hex.domain.functional.service.skill.SkillDeleteService;
 import arch.hex.domain.functional.service.skill.SkillSaveService;
 import arch.hex.domain.functional.service.skill.SkillUpdateService;
@@ -20,6 +21,11 @@ public class SkillConfig {
     @Bean
     public SkillUpdateService skillUpdateService(SkillPersistenceSpi spi, SkillDeleteService skillDeleteService) {
         return new SkillUpdateService(spi, skillDeleteService);
+    }
+
+    @Bean
+    public FindSkillsByConsultantService findSkillsByConsultantService(SkillPersistenceSpi spi) {
+        return new FindSkillsByConsultantService(spi);
     }
 
     @Bean

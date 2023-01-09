@@ -12,6 +12,8 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static arch.hex.server.mapper.ConsultantEntityMapper.fromDomain;
 import static io.vavr.API.Try;
 
@@ -34,6 +36,15 @@ public class ConsultantDataBaseAdapter implements ConsultantPersistenceSpi {
     @Transactional(readOnly = true)
     public Option<Consultant> findById(String idConsultant) {
         return consultantRepositories.findConsultantEntityByIdConsultant(idConsultant)
+                .map(ConsultantEntityMapper::toDomain);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Either<ApplicationError, List<Consultant>> search(List<String> skills, List<String> availability) {
+        return Try(() -> consultantRepositories.findBySkillsAndAvailability(skills, availability))
+                .toEither()
+                .mapLeft(throwable -> new ApplicationError("Unable to search consultant", null, null, throwable))
                 .map(ConsultantEntityMapper::toDomain);
     }
 }

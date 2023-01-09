@@ -3,6 +3,8 @@ package arch.hex.server.mapper;
 import arch.hex.domain.functional.model.Consultant;
 import arch.hex.server.entity.ConsultantEntity;
 
+import java.util.List;
+
 public interface ConsultantEntityMapper {
     static Consultant toDomain(ConsultantEntity entity) {
         return Consultant.builder()
@@ -11,6 +13,12 @@ public interface ConsultantEntityMapper {
                 .averageDailyRate(entity.getAverageDailyRate())
                 .description(entity.getDescription())
                 .build();
+    }
+
+    static List<Consultant> toDomain(List<ConsultantEntity> entities) {
+        return entities.stream()
+                .map(ConsultantEntityMapper::toDomain)
+                .toList();
     }
 
     static ConsultantEntity fromDomain(Consultant domain) {

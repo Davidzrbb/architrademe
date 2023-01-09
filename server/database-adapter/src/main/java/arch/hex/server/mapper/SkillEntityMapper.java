@@ -16,9 +16,7 @@ public interface SkillEntityMapper {
                 .build();
     }
 
-    static List<Skill> toDomain(List<SkillEntity> entities) {
-        return entities.stream().map(SkillEntityMapper::toDomain).toList();
-    }
+
 
     static SkillEntity fromDomain(Skill domain) {
         return SkillEntity.builder()
