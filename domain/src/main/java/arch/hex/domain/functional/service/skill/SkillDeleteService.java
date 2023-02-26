@@ -19,7 +19,7 @@ public class SkillDeleteService {
         if (idConsultant != null) {
             Either<ApplicationError, List<Skill>> skills = skillPersistenceSpi.deleteAllByIdConsultant(idConsultant);
             if (skills.isLeft()) {
-                log.error("Error deleting skills for consultant with id: {}", skills.getLeft());
+                throw new RuntimeException(skills.getLeft().context());
             }
         }
     }

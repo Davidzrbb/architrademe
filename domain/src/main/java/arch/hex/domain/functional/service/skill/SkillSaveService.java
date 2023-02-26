@@ -19,7 +19,7 @@ public class SkillSaveService {
         for (String skill : skills) {
             Either<ApplicationError, Skill> skillActual = skillPersistenceSpi.save(Skill.builder().name(skill).consultant(consultant).build());
             if (skillActual.isLeft()) {
-                skillActual.getLeft();
+                throw new RuntimeException(skillActual.getLeft().context());
             }
         }
     }

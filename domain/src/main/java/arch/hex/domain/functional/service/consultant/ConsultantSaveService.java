@@ -45,4 +45,5 @@ public class ConsultantSaveService implements ConsultantSaveApi {
                 .available(availability)
                 .build());
     }
+
 }

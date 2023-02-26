@@ -17,11 +17,13 @@ public class AvailabilityUpdateService {
     private final AvailabilityDeleteService availabilityDeleteService;
 
     public void save(List<String> availability, Consultant consultant) {
-        availabilityDeleteService.deleteAllByIdConsultant(consultant.getIdConsultant());
-        for (String available : availability) {
-            Either<ApplicationError, Availability> availabilityActual = availabilityPersistenceSpi.save(Availability.builder().availability(available).consultant(consultant).build());
-            if (availabilityActual.isLeft()) {
-                availabilityActual.getLeft();
+        if (availabilityDeleteService.deleteAllByIdConsultant(consultant.getIdConsultant()).isRight()) {
+            for (String available : availability) {
+                Either<ApplicationError, Availability> availabilityActual = availabilityPersistenceSpi.save(Availability.builder().availability(available).consultant(consultant).build());
+                if (availabilityActual.isLeft()) {
+                    availabilityActual.getLeft();
+                    break;
+                }
             }
         }
     }
